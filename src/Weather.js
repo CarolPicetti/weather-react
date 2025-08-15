@@ -1,8 +1,25 @@
-import React from "react";
+import axios from "axios";
 import "./Weather.css";
+import { useState } from "react";
 
-export default function Weather () {
-    return <div className="Weather">
+export default function Weather (props) {
+    const [weatherData, setWeatherData] = useState({ ready: false});
+    function handleResponse(response){
+    console.log(response.data);
+    setWeatherData({
+        ready: true,
+        city: response.data.city,
+        temperature: Math.round(response.data.temperature.current),
+        wind: response.data.wind.speed,
+        humidity: response.data.temperature.humidity,
+        description: response.data.condition.description,
+        iconUrl: "http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png",
+        date: "Wednesday 07:00",
+    })
+    }
+
+    if (weatherData.ready) {
+        return <div className="Weather">
     <form>
         <div className="row">
         <div className="col-9">
@@ -13,17 +30,17 @@ export default function Weather () {
         </div>
         </div>
     </form>
-    <h1>New York</h1>
+    <h1>{weatherData.city}</h1>
     <ul>
-        <li>Wednesday 07:00</li>
-        <li>Cloudy</li>
+        <li>{weatherData.date}</li>
+        <li className="text-capitalize">{weatherData.description}</li>
     </ul>
     <div className="row mt-3">
         <div className="col-6">
             <div className="clearfix">
-                <img src="https://ssl.gstatic.com/onebox/weather/64/cloudy.png" alt="cloudy" className="float-left"></img>
+                <img src={weatherData.iconUrl} alt={weatherData.description} className="float-left"></img>
                 
-                    <span className="temperature">26</span>
+                    <span className="temperature">{weatherData.temperature}</span>
                     <span className="unit">°C</span>
                 
             </div>    
@@ -31,13 +48,10 @@ export default function Weather () {
         <div className="col-6">
             <ul>
                 <li>
-                    Precipitation: 0%
+                    Humidity: {weatherData.humidity} %
                 </li>
                 <li>
-                    Humity: 45%
-                </li>
-                <li>
-                    Wind: 21 km/h
+                    Wind: {weatherData.wind} km/h
                 </li>
             </ul>
         </div>
@@ -45,4 +59,11 @@ export default function Weather () {
 
     </div>
  </div>
+} else {
+    const apiKey = "141903t193o7f25eb4f8b827eac040ff";
+    let apiUrl =`https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+
+    return "Loading...";
+}
 }
