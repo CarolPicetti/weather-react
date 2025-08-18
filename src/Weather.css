@@ -32,6 +32,11 @@
     display: inline-block;
 }
 
+.Weather .clearfix {
+    display: flex;
+    align-items: center;
+}
+
 .Weather .temperature {
     font-weight: bold;
     color: rgb(49, 49, 49);
