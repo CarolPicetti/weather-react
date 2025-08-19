@@ -27,20 +27,21 @@
 }
 
 .Weather canvas {
-    margin-right: 14px;
     margin-top: 7px;
     display: inline-block;
+    
 }
 
 .Weather .clearfix {
     display: flex;
-    align-items: center;
+    margin-bottom: 13px;
 }
 
 .Weather .temperature {
+    margin-left: 16px;
     font-weight: bold;
     color: rgb(49, 49, 49);
-    font-size: 64px;
+    font-size: 60px;
     line-height: 64px;
     font-weight: 400;
 }
